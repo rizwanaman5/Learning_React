@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import Counter from './counter';
 import List from './list';
+import User from './controlledForm';
 
 class App extends React.Component {
 
@@ -24,6 +25,12 @@ class App extends React.Component {
     ]
   }
 
+  addContact = contact => {
+    this.setState({
+      contacts: [...this.state.contacts, contact]
+    })
+  }
+
   increment = () => {
     this.setState({
       count: this.state.count + 1
@@ -39,16 +46,33 @@ class App extends React.Component {
   }
 
   removeContacts = (contact) => {
-    console.log('inside app.js', contact)
+    // console.log('inside app.js', contact)
     const updateState = this.state.contacts.filter((c) => c.id !== contact.id)
-    console.log('only updated state', updateState)
+    // console.log('only updated state', updateState)
     this.setState({
       contacts: updateState
     })
 
   }
 
+  updateContact = (contact) => {
+    // console.log('inside app.js line 59', contact)
+    const newContact = this.state.contacts.map((c) => {
+      // console.log('from updateContact', c)
+      if (c.id === contact.id) {
+        return contact
+      }
+      return c
+    })
+    console.log('only updated state', newContact)
+    this.setState({
+      contacts: newContact
+    })
+
+  }
+
   render() {
+    console.log('from app.js', this.props)
     return (
       <div className="App">
 
@@ -57,7 +81,9 @@ class App extends React.Component {
           increment={this.increment}
           decrement={this.decrement} />
 
-        <List contacts={this.state.contacts} removeContacts={this.removeContacts} />
+        <User contact={this.state.contacts} addContact={this.addContact} />
+
+        <List contacts={this.state.contacts} removeContacts={this.removeContacts} updateContact={this.updateContact} />
       </div>
     );
   }
