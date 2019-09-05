@@ -1,142 +1,82 @@
-import React from 'react';
-import './App.css';
-import axios from 'axios'
+import React, { Component } from "react"
+import data from "./JSON"
+import TableRows from "./TableRows"
 
-const NavBar = ({ handleChange, setTime }) => {
-  // console.log('inside Navbar',setTime);
 
-  return (
-    <div>
-      <nav className="navbar navbar-light bg-light">
-        <form className="form-inline">
-          <input name="advertiser" className="form-control mr-sm-2" type="search" placeholder="Enter brand name" onChange={(e) => handleChange(e)} />
-        </form>
-
-        <form className="form-inline" style={{ margin: '10px', marginLeft: '200px' }}>
-
-          <button onClick={setTime} name="timeline" value='365'>Last Year</button>
-          <button onClick={setTime} name="timeline" value='730'>Last Two Years</button>
-          <button onClick={setTime} name="timeline" value='1095'>Last Three Years</button>
-
-        </form>
-      </nav>
-    </div>
-  )
-}
-
-const Table = ({ xyz }) => {
-  // console.log('inside table xyz', xyz)
-  var display = ''
-  if (xyz) {
-    // display = xyz.data.map((abc) => (
-    display = xyz.data.map((abc) => (
-      <tbody>
-        <tr>
-          <td >
-            {abc.name}
-          </td>
-          {abc.campaigns[0] ? <td >{abc.campaigns[0].name}</td> : <td >No data</td>}
-          <td >
-            {abc.campaigns.length}
-          </td>
-        </tr>
-      </tbody>
-    ))
-  } else {
-    display = <h1>hi</h1>
-  }
-  return (
-    <table className="table" style={{ maxWidth: '900px' }} >
-      <thead>
-        <tr>
-          <th scope="col">Brand Name</th>
-          <th scope="col">First Campaign Name</th>
-          <th scope="col">Count of Campaigns inside brand</th>
-        </tr>
-      </thead>
-      {display}
-    </table>
-  )
-}
-
-// SEPARATOR *******************************************************
-class App extends React.Component {
-  state = {
-    apiData: '',
-    advertiser: '',
-    timeline: ''
-  }
-  async componentDidMount() {
-    await axios.get('https://s3-ap-southeast-1.amazonaws.com/he-public-data/data%20(1)4614ba8.json')
-      .then((data) => {
-        // console.log('from componentDidMount', data)
-        this.setState({
-          apiData: data
-        })
-      })
-      .catch((err) => console.log(err))
-  }
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-  setTime = (e) => {
-    e.preventDefault();
-
-    console.log('hello |', e.target.value)
-    this.setState({
-      timeline: e.target.value
-    })
-  }
-
-  render() {
-    if (this.state.advertiser) {
-
-      let arr = this.state.apiData.data.filter((match => match.advertiserName === this.state.advertiser));
-      console.log(arr)
-
-      return (
-        <div className="App">
-          <NavBar handleSubmitedit={this.handleSubmitedit} handleChange={this.handleChange} setTime={this.setTime} />
-
-          <table className="table" style={{ maxWidth: '900px' }} >
-            <thead>
-              <tr>
-                <th scope="col">Brand Name</th>
-                <th scope="col">First Campaign Name</th>
-                <th scope="col">Count of Campaigns inside brand</th>
-              </tr>
-            </thead>
-            <tbody>
-              {arr.map((abc) => (
-                <tr>
-                  <td >
-                    {abc.name}
-                  </td>
-                  <td>
-                    {abc.campaigns[0] ? <td >{abc.campaigns[0].name}</td> : <td >No data</td>}
-                  </td>
-                  <td >
-                    {this.state.timeline ? abc.campaigns.filter((camp) => {
-                      (new Date().valueOf() - new Date(camp.start_date.split('-').reverse().join('-').valueOf())) / (1000 * 3600 * 24) <= this.state.timeline
-                    }).length : abc.campaigns.length}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )
-    } else {
-      return (
-        <div className="App">
-          <NavBar handleSubmitedit={this.handleSubmitedit} handleChange={this.handleChange} setTime={this.setTime} />
-          <Table xyz={this.state.apiData} />
-        </div>
-      )
+class App extends Component {
+    state = {
+        advertiser: null,
+        timeline: 0
     }
-  }
+    handleAdvertiser = (e) => {
+        this.setState({
+            advertiser: e.target.value
+        })
+    }
+    timeline = (e) => {
+        this.setState({
+            timeline: e.target.value
+        })
+    }
+    render() {
+        let array = data.data;
+        let trows;
+        let now = new Date().valueOf()
+        let options = array.map((obj) => (
+            <option>{obj.advertiserName}</option>
+        ))
+        if (this.state.advertiser && this.state.timeline) {
+            array = array.filter((obj) => obj.advertiserName == this.state.advertiser)
+            let modarray = array.map((obj) => {
+                obj.campaigns = obj.campaigns.filter((camp) => {
+                    var x = new Date(camp.start_date.split("-").reverse().join("-")).valueOf();
+                    var y = this.state.timeline * 24 * 3600 * 1000;
+                    if (x > (now - y)) {
+                        return true
+                    }
+                })
+            }
+            )
+            console.log(array)
+            trows = array.map((obj) => (
+                <TableRows obj={obj} />
+            ))
+        }
+        if (this.state.advertiser && !this.state.timeline) {
+            array = array.filter((obj) => obj.advertiserName == this.state.advertiser)
+            trows = array.map((obj) => (
+                <TableRows obj={obj} />
+            ))
+        } else {
+            trows = array.map((obj) => (
+                <TableRows obj={obj} />))
+        }
+        return (
+            <div>
+                <select type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Select the advertiser" value={this.state.advertiser} onChange={this.handleAdvertiser}>
+                    {options}
+                </select>
+                <select type=" text"
+                    class=" form-control" name="" id="" aria-describedby=" helpId" placeholder=" timeline" value={this.state.timeline} onChange={this.timeline}>
+                    <option value="365">Last Year</option>
+                    <option value="730"> Last 2 Years</option >
+                    <option value="1095"> Last 3 Years</option >
+                </select >
+                <table class=" table">
+                    <thead>
+                        <tr>
+                            <th>Brand Name</th>
+                            <th>First Campaign</th>
+                            <th>Count of Campaingns</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {trows}
+                    </tbody>
+                </table>
+            </div >
+        )
+    }
 }
 
 export default App;

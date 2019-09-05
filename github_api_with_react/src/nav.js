@@ -13,8 +13,6 @@ const SelectedLanguage = ({ SelectedLanguage, updateLanguage }) => {
         </div>)
 }
 
-
-
 // Class Based Component **********
 class Nav extends Component {
 
@@ -29,7 +27,7 @@ class Nav extends Component {
             repos: []
         })
 
-        fetchPopularRepos(this.state.selectedLanguage).then((data) =>
+        fetchPopularRepos(this.state.SelectedLanguage).then((data) =>
             this.setState({
                 repos: data
             }))

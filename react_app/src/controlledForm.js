@@ -1,4 +1,5 @@
 import React from 'react';
+import { maxHeaderSize } from 'http';
 
 class User extends React.Component {
     state = {
@@ -27,9 +28,9 @@ class User extends React.Component {
         return (
             <div style={{ border: '2px solid grey' }}>
                 <h1>User Form </h1>
-                <form onSubmit={this.handleSubmit}>
-                    <input name="name" value={this.state.name} onChange={this.handleChange} placeholder='name' />
-                    <input name="id" value={this.state.id} onChange={this.handleChange} placeholder='id' />
+                <form onSubmit={this.handleSubmit} style={{margin:'10px'}}>
+                    <input name="name" value={this.state.name} onChange={this.handleChange} placeholder='name' style={{margin:'5px'}}/>
+                    <input name="id" type={Number} value={this.state.id} onChange={this.handleChange} placeholder='id' style={{margin:'5px'}}/>
                     <button type="submit">Submit</button>
                 </form>
             </div>

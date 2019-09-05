@@ -25,10 +25,20 @@ class App extends React.Component {
     ]
   }
 
-  addContact = contact => {
+  componentDidMount = () => {
     this.setState({
+      contacts: JSON.parse(localStorage.getItem('contacts'))
+    })
+  }
+
+  addContact = async contact => {
+   await this.setState({
       contacts: [...this.state.contacts, contact]
     })
+
+    let key = this.state.contacts.map((data) => data.id)
+    console.log('for local storage', key);
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
   }
 
   increment = () => {
@@ -45,17 +55,18 @@ class App extends React.Component {
     }
   }
 
-  removeContacts = (contact) => {
+  removeContacts = async (contact) => {
     // console.log('inside app.js', contact)
     const updateState = this.state.contacts.filter((c) => c.id !== contact.id)
     // console.log('only updated state', updateState)
-    this.setState({
+   await this.setState({
       contacts: updateState
     })
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
 
   }
 
-  updateContact = (contact) => {
+  updateContact = async (contact) => {
     // console.log('inside app.js line 59', contact)
     const newContact = this.state.contacts.map((c) => {
       // console.log('from updateContact', c)
@@ -65,9 +76,10 @@ class App extends React.Component {
       return c
     })
     console.log('only updated state', newContact)
-    this.setState({
+    await this.setState({
       contacts: newContact
     })
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
 
   }
 
@@ -76,16 +88,16 @@ class App extends React.Component {
     return (
       <div className="App">
 
-        <Counter
+        {/* <Counter
           count={this.state.count}
           increment={this.increment}
-          decrement={this.decrement} />
+          decrement={this.decrement} /> */}
 
         <User contact={this.state.contacts} addContact={this.addContact} />
 
         <List contacts={this.state.contacts} removeContacts={this.removeContacts} updateContact={this.updateContact} />
 
-        
+
       </div>
     );
   }
