@@ -40,7 +40,6 @@ class Form extends React.Component {
                 {
                     this.state.edit &&
                     <form onSubmit={this.handleSubmitedit}>
-                        <input name="id" value={this.state.id} onChange={(e) => this.handleChange(e)} placeholder='id' />
                         <input name="name" value={this.state.name} onChange={(e) => this.handleChange(e)} placeholder='name' />
                         <button type="submit">Submit</button>
                     </form>

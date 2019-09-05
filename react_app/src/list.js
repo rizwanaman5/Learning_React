@@ -25,7 +25,7 @@ class List extends React.Component {
                 <h1>List of Contacts</h1>
                 <input placeholder="search" value={this.state.query} onChange={this.updateQuery} />
                 {showContacts.map((contact) => (
-                    <div style={{ border: " 2px dashed red" }} key={contact.id}>
+                    <div key={contact.id}>
                         <h2>{contact.name}</h2>
                         <button onClick={() => removeContacts(contact)}>Remove Item</button>
                         <Form contact={contact} updateContact={this.props.updateContact}/>

@@ -84,6 +84,8 @@ class App extends React.Component {
         <User contact={this.state.contacts} addContact={this.addContact} />
 
         <List contacts={this.state.contacts} removeContacts={this.removeContacts} updateContact={this.updateContact} />
+
+        
       </div>
     );
   }
