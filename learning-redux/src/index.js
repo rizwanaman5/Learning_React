@@ -6,10 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './rootReducer'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const store = createStore(
     rootReducer,
-    {}
+    {},
+    composeWithDevTools()
 )
 
 ReactDOM.render(
@@ -22,3 +24,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+export default store

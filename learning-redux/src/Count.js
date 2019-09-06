@@ -1,25 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Count from './reducer';
+import { bindActionCreators } from 'redux';
+import { DecCount, IncCount } from './action';
 
 
 const Counter = (props) => {
-console.log(props)
+    console.log(props)
     return (
         <div>
             <h1>Count : {props.count} </h1>
-            <button>INC</button>
-            <button>DEC</button>
+            <button onClick={props.IncCount} style={{margin:'10px'}}>INC</button>
+            <button onClick={props.DecCount}>DEC</button>
         </div>
     )
 }
 
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
     return {
-        count: state.count
+        count: state.Count.count
     }
 }
 
-const mapDispatchToProps = { Count }
+const mapDispatchToProps = dispatch => bindActionCreators({ DecCount, IncCount }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
