@@ -6,7 +6,7 @@ const initialState = {
         {
             todo: 'Learn to code'
         },
-        {
+        {   
             todo: 'Learn Redux'
         },
         {
