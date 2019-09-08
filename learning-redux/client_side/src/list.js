@@ -8,13 +8,10 @@ class List extends React.Component {
     state = {
         todo: ''
     }
-
     handleSubmit = (e) => {
         e.preventDefault();
-
         let data = this.state
         console.log(data);
-
         store.dispatch({
             type: "ADD",
             payload: data
@@ -25,16 +22,16 @@ class List extends React.Component {
             todo: [e.target.value]
         })
     }
-    removeTodo = (todo) => {
-        const updatedList = this
-    }   
+    // removeTodo = (todo) => {
+    //     const updatedList = this.state.filter((todo)=> )
+    // }
 
     render() {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <input name='todo' placeholder='todo' onChange={(e) => this.onChange(e)} />
-                    <button style={{marginLeft:'10px'}} type='submit'>Submit</button>
+                    <button style={{ marginLeft: '10px' }} type='submit'>Submit</button>
                 </form>
 
             </div>

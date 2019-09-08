@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 import { getMovies } from './action';
 import { bindActionCreators } from 'redux';
 import { MovieCard } from './styled-components';
-import { Link , Route} from 'react-router-dom';
-import MovieDetails from './movieDetails';
+import { Link } from 'react-router-dom';
 
 
 class Movies extends React.Component {
+    
     componentDidMount() {
-        this.props.getMovies()
+        console.log('from did mount', this.props.status)
+        // this.props.getMovies()
+        const a = !this.props.status ? this.props.getMovies() : null  
     }
-
+    
     render() {
-        // console.log(this.props.data)
+        console.log('inside render', this.props)
 
         return (
             <div>
@@ -31,9 +33,10 @@ class Movies extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        data: state.MovieList.movies
-    }
+    return ({
+        data: state.MovieList.movies,
+        status: state.MovieList.isLoaded
+    })
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({

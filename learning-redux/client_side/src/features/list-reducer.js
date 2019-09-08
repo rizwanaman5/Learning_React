@@ -1,18 +1,5 @@
 const initialState = {
-    data: [
-        {
-            todo: 'Go Home'
-        },
-        {
-            todo: 'Learn to code'
-        },
-        {   
-            todo: 'Learn Redux'
-        },
-        {
-            todo: 'make a project'
-        }
-    ]
+    data: []
 }
 
 const CreateList = (state = initialState, action) => {

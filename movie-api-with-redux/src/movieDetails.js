@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getMovie } from './action';
+import { getMovie, clearData } from './action';
 import { bindActionCreators } from 'redux';
 import { DetailCard } from './styled-components';
 
@@ -9,6 +9,12 @@ class MovieDetails extends React.Component {
     componentDidMount() {
         this.props.getMovie(this.props.match.params.id)
     }
+
+    componentWillUnmount() {
+        console.log('probably worked')
+        this.props.clearData()
+    }
+
     render() {
         console.log('movieDetails', this.props.data)
         // console.log('from more details',res.data);
@@ -18,25 +24,26 @@ class MovieDetails extends React.Component {
                     <div style={{display:'flex'}}>
                         <DetailCard src={this.props.data.images.poster} />
                         <div style={{textAlign:'left', marginLeft:'30px', marginTop:'30px'}}>
-                            <strong>Movie Title</strong> : {this.props.data.title}<br/>
-                            <strong>Run Time</strong>    : {this.props.data.runtime} minutes<br/>
+                            <strong>Movie Title</strong>  : {this.props.data.title}<br/>
+                            <strong>Run Time</strong>     : {this.props.data.runtime} minutes<br/>
                             <strong>Release Year</strong> : {this.props.data.year}<br/><br/>
-                            <strong>Genre</strong> : {this.props.data.genres.map((data) => (`${data} | `))}<br/><br/>
+                            <strong>Genre</strong>        : {this.props.data.genres.map((data) => (`${data} | `))}<br/><br/>
 
-                            <strong>Ratings</strong> : {this.props.data.rating.votes}<br/><br/>
+                            <strong>Ratings</strong>      : {this.props.data.rating.votes}<br/><br/>
 
-                            <strong>Synopsis</strong> : {this.props.data.synopsis}<br/><br/>
+                            <strong>Synopsis</strong>     : {this.props.data.synopsis}<br/><br/>
 
 
                         </div>
                     </div>
                     <a href='/' style={{color:'white', alignSelf:'left', marginTop:"30px"}}> Back</a>
+
                 </div>
             )
         } else {
             return (
                 <div>
-                    Loading ........
+                    Loading...
                 </div>
             )
         }
@@ -50,7 +57,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getMovie
+    getMovie,
+    clearData
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieDetails)
