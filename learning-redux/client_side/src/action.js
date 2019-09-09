@@ -12,6 +12,36 @@ export function getTodos() {
     }
 }
 
+export function makeTodo(a) {
+    // console.log(e.target.value);
+
+    return function (dispatch) {
+        axios.post('/todos', a)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+
+        return dispatch({
+            type: 'DEL',
+            payload: a
+        })
+    }
+}
+
+export function deleteTodo(a) {
+    // console.log(e.target.value);
+
+    return function (dispatch) {
+        axios.delete('/todos', a)
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err))
+
+
+        return dispatch({
+            type: 'ADD',
+            payload: a
+        })
+    }
+}
 
 export function DecCount() {
     return {

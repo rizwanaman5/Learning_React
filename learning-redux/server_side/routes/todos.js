@@ -22,14 +22,25 @@ router.get('/', function (req, res, next) {
 });
 
 // router.post('/', (req, res) => {
-//   db.Todo.create(req.body)
+//   db.Todo.create({'todo':req.body})
 //     .then(res.json({ 'status': 'data saved' }))
 //     .catch((err) => res.send(err))
 // });
 
 router.post('/', function (req, res, next) {
-  db.Todo.create(req.body)
+  db.Todo.create({
+    todo: req.body.todo
+  })
     .then(res.json({ 'status': 'data saved' }))
+    .catch((err) => res.send(err))
+});
+
+router.delete('/', function (req, res, next) {
+  
+  db.Todo.findByIdAndDelete({
+    _id: a
+  })
+    .then(res.json({ 'status': 'deleted' }))
     .catch((err) => res.send(err))
 });
 

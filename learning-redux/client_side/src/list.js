@@ -1,25 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { AddTodo, DeleteTodo } from './action';
+import { AddTodo, DeleteTodo, makeTodo } from './action';
 import store from './index';
+// import ShowList from './showList';
 
 class List extends React.Component {
     state = {
         todo: ''
+
     }
     handleSubmit = (e) => {
         e.preventDefault();
         let data = this.state
-        console.log(data);
-        store.dispatch({
-            type: "ADD",
-            payload: data
-        })
+        console.log('local state in List',data);
+        this.props.makeTodo(data);
+
     }
     onChange = (e) => {
         this.setState({
-            todo: [e.target.value]
+            todo: e.target.value
         })
     }
     // removeTodo = (todo) => {
@@ -30,7 +30,7 @@ class List extends React.Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <input name='todo' placeholder='todo' onChange={(e) => this.onChange(e)} />
+                    <input name='todo' placeholder='todo' onChange={this.onChange} />
                     <button style={{ marginLeft: '10px' }} type='submit'>Submit</button>
                 </form>
 
@@ -45,6 +45,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ AddTodo, DeleteTodo }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ AddTodo, DeleteTodo, makeTodo }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);
